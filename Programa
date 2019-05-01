@@ -1,1 +1,54 @@
+import numpy as np
+import matplotlib.pyplot as plt
+from scipy.integrate import odeint
 
+
+#gt = estoque de xanax gastrointestinal
+#st = estoque de xanax no sangue
+#c = massa ingerida
+#kx = constante de eliminacao
+#ka = constante de absorcao
+#km = constante de metabolizacao
+#ke = constante de eliminacao
+
+#homem de 70kg 35 anos 175 cm de altura
+#dose recomendada muda dependendo da idade
+
+#==================================================================================================================#
+def z(lista_taxas,t):
+    s_taxa = lista_taxas[1]
+    g_taxa = lista_taxas[0]
+    a = c - g *(ka +kx)
+    b = ka * c - s*(km + ke)
+    return a,b
+
+t_meio = 11.2 #horas
+c = 0.25
+km = 66 + 13.7 * 70 + 5.0 * 175 - 6.8 * 35
+ka = 0.8
+kx = 0.2
+ke = 0.693/11.2
+s = 0
+g = 0
+delta_t = 1e-3
+lista_taxas = [s,g]
+st = [1]
+gt = [0]
+tempo = np.arange(0,24,delta_t)
+for k in range(0, len(tempo)-1):
+    st.append(st[k]+z(lista_taxas,tempo)[1]*delta_t)
+    gt.append(gt[k]+z(lista_taxas, tempo)[0]*delta_t)
+listasg = [s,g]
+solucao = odeint(z,listasg,tempo)
+
+plt.plot(tempo, st)
+plt.xlabel('solucao')
+plt.ylabel('lista tempo')
+plt.grid(True)
+plt.show()
+
+plt.plot(tempo, gt)
+plt.xlabel('solucao')
+plt.ylabel('lista tempo')
+plt.grid(True)
+plt.show()
