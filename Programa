@@ -15,40 +15,55 @@ from scipy.integrate import odeint
 #dose recomendada muda dependendo da idade
 
 #==================================================================================================================#
-def z(lista_taxas,t):
-    s_taxa = lista_taxas[1]
-    g_taxa = lista_taxas[0]
-    a = c - g *(ka +kx)
-    b = ka * c - s*(km + ke)
-    return a,b
-
-t_meio = 11.2 #horas
-c = 0.25
-km = 66 + 13.7 * 70 + 5.0 * 175 - 6.8 * 35
-ka = 0.8
-kx = 0.2
-ke = 0.693/11.2
-s = 0
-g = 0
+def c(t,dose,duracao):
+    if t<duracao:
+        fluxo_entrada = dose/duracao
+    else:
+        fluxo_entrada = 0
+    return fluxo_entrada
+CI = [0,0] #condicao inicial
+def z(lista_solucao,t,dose,duracao):
+    ka = 0.8
+    kx = 0.2
+    km = 66 + 13.7 * 70 + 5 * 175 - 6.8 * 35
+    ke =0.693/11.2
+    g = lista_solucao[0]
+    s = lista_solucao[1]
+    dgdt = c(t,dose,duracao) - g*(ka+kx)
+    dsdt = ka * g - s*(km+ke)
+    return [dgdt,dsdt]
+dose = 0.25
+duracao = 2
 delta_t = 1e-3
-lista_taxas = [s,g]
-st = [1]
-gt = [0]
 tempo = np.arange(0,24,delta_t)
-for k in range(0, len(tempo)-1):
-    st.append(st[k]+z(lista_taxas,tempo)[1]*delta_t)
-    gt.append(gt[k]+z(lista_taxas, tempo)[0]*delta_t)
-listasg = [s,g]
-solucao = odeint(z,listasg,tempo)
+solucao = odeint(z,CI,tempo,args=(dose,duracao))
+s_gastro = solucao[:,0]
+sangue = solucao[:,1]
 
-plt.plot(tempo, st)
-plt.xlabel('solucao')
-plt.ylabel('lista tempo')
+
+
+plt.plot(tempo, sangue)
+plt.xlabel('lista tempo')
+plt.ylabel('solucao')
 plt.grid(True)
 plt.show()
 
-plt.plot(tempo, gt)
-plt.xlabel('solucao')
-plt.ylabel('lista tempo')
+plt.plot(tempo, s_gastro)
+plt.xlabel('lista tempo')
+plt.ylabel('solucao')
 plt.grid(True)
+plt.show()
+
+
+
+lista_duracao = np.arange(0.2,3,0.2)
+for duracao in lista_duracao:
+    solucao1 = odeint(z,CI,tempo,args=(dose,duracao))
+    s_gastro = solucao1[:,0]
+    sangue = solucao1[:,1]
+    plt.plot(tempo,sangue, label = 'duracao: %.1f' %duracao)
+plt.legend()
+plt.xlabel("Tempo (h)")
+plt.ylabel("Massa de álcool no corpo")
+plt.grid(True)    
 plt.show()
