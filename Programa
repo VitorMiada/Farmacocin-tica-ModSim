@@ -3,13 +3,14 @@ import matplotlib.pyplot as plt
 from scipy.integrate import odeint
 
 
-#gt = estoque de xanax gastrointestinal
-#st = estoque de xanax no sangue
-#c = massa ingerida
+#g = estoque de xanax gastrointestinal
+#s = estoque de xanax no sangue
+#dose = massa ingerida
 #kx = constante de eliminacao
 #ka = constante de absorcao
 #km = constante de metabolizacao
 #ke = constante de eliminacao
+#usando a duracao de 2
 
 #homem de 70kg 35 anos 175 cm de altura
 #dose recomendada muda dependendo da idade
