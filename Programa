@@ -68,3 +68,4 @@ plt.xlabel("Tempo (h)")
 plt.ylabel("Massa de xanax no corpo")
 plt.grid(True)    
 plt.show()
+#arrumar os graficos q foram printados e fazer outro grafico printando a Therapeutic range e fazer um grafico q mostre quanto agt pode tomar sme morrer ou sla
