@@ -65,6 +65,6 @@ for duracao in lista_duracao:
     plt.plot(tempo,sangue, label = 'duracao: %.1f' %duracao)
 plt.legend()
 plt.xlabel("Tempo (h)")
-plt.ylabel("Massa de álcool no corpo")
+plt.ylabel("Massa de xanax no corpo")
 plt.grid(True)    
 plt.show()
