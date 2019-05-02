@@ -8,13 +8,12 @@ from scipy.integrate import odeint
 #dose = massa ingerida
 #kx = constante de eliminacao
 #ka = constante de absorcao
-#km = constante de metabolizacao
 #ke = constante de eliminacao
 #usando a duracao de 2
 
 #homem de 70kg 35 anos 175 cm de altura
 #dose recomendada muda dependendo da idade
-
+#a constante de eliminacao é irelevante pois a quantidade de xanax metabolizada é minuscula 
 #==================================================================================================================#
 def c(t,dose,duracao):
     if t<duracao:
@@ -26,14 +25,13 @@ CI = [0,0] #condicao inicial
 def z(lista_solucao,t,dose,duracao):
     ka = 0.8
     kx = 0.2
-    km = 66 + 13.7 * 70 + 5 * 175 - 6.8 * 35
     ke =0.693/11.2
     g = lista_solucao[0]
     s = lista_solucao[1]
     dgdt = c(t,dose,duracao) - g*(ka+kx)
-    dsdt = ka * g - s*(km+ke)
+    dsdt = ka * g - s*(ke)
     return [dgdt,dsdt]
-dose = 0.25
+dose = 0.5
 duracao = 2
 delta_t = 1e-3
 tempo = np.arange(0,24,delta_t)
@@ -41,31 +39,36 @@ solucao = odeint(z,CI,tempo,args=(dose,duracao))
 s_gastro = solucao[:,0]
 sangue = solucao[:,1]
 
-
+#plot do grafico de cocentracao de xanax de sangue por tempo
 
 plt.plot(tempo, sangue)
-plt.xlabel('lista tempo')
-plt.ylabel('solucao')
+plt.xlabel('tempo(h)')
+plt.ylabel('Concentracao de xanax no sangue(mg)')
 plt.grid(True)
 plt.show()
 
+#concentracao de xanax no gastro por tempo
 plt.plot(tempo, s_gastro)
-plt.xlabel('lista tempo')
-plt.ylabel('solucao')
+plt.xlabel('tempo(h)')
+plt.ylabel('concentracao no sistema gastrointestinal(mg)')
 plt.grid(True)
 plt.show()
 
 
-
+lista_dose = [0.05,0.1,0.15,0.2,0.25,0.3,0.35,0.4,0.45,0.5]
 lista_duracao = np.arange(0.2,3,0.2)
-for duracao in lista_duracao:
+for dose in lista_dose:
     solucao1 = odeint(z,CI,tempo,args=(dose,duracao))
     s_gastro = solucao1[:,0]
     sangue = solucao1[:,1]
-    plt.plot(tempo,sangue, label = 'duracao: %.1f' %duracao)
+    plt.plot(tempo,sangue, label = 'dose: %.2f' %dose)
+#concentracao de xanax no sangue por tempo (iteraca de cada tempo)    
 plt.legend()
 plt.xlabel("Tempo (h)")
-plt.ylabel("Massa de xanax no corpo")
+plt.ylabel("Massa de xanax no corpo(mg)")
 plt.grid(True)    
 plt.show()
+CI = [0,0]
+  
+
 #arrumar os graficos q foram printados e fazer outro grafico printando a Therapeutic range e fazer um grafico q mostre quanto agt pode tomar sme morrer ou sla
