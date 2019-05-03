@@ -9,15 +9,14 @@ from scipy.integrate import odeint
 #kx = constante de eliminacao
 #ka = constante de absorcao
 #ke = constante de eliminacao
-#usando a duracao de 2
 
-#homem de 70kg 35 anos 175 cm de altura
-#dose recomendada muda dependendo da idade
-#a constante de eliminacao é irelevante pois a quantidade de xanax metabolizada é minuscula 
+
+
 #==================================================================================================================#
 def c(t,dose,duracao):
     if t<duracao:
         fluxo_entrada = dose/duracao
+        
     else:
         fluxo_entrada = 0
     return fluxo_entrada
@@ -43,7 +42,7 @@ sangue = solucao[:,1]
 
 plt.plot(tempo, sangue)
 plt.xlabel('tempo(h)')
-plt.ylabel('Concentracao de xanax no sangue(g)')
+plt.ylabel('Concentracao de xanax no sangue(mg/ml)')
 plt.grid(True)
 plt.show()
 
@@ -59,16 +58,23 @@ for dose in lista_dose:
 #concentracao de xanax no sangue por tempo (iteraca de cada tempo)    
 plt.legend()
 plt.xlabel("Tempo (h)")
-plt.ylabel("Massa de xanax no corpo(g)")
+plt.ylabel("Massa de xanax no corpo(mg/ml)")
 plt.grid(True)    
 plt.show()
 
-#janela terapeutica
+#para uma overdose tomando todas a pilulas ao mesmo tempo
+dose1 = 124600/73
+duracao = 2
+delta_t = 1e-3
+tempo = np.arange(0,24,delta_t)
+solucao = odeint(z,CI,tempo,args=(dose1,duracao))
+s_gastro = solucao[:,0]
+sangue = solucao[:,1]
 
-    
-    
-    
+#plot do grafico de cocentracao de xanax de sangue por tempo
 
-  
-
-#arrumar os graficos q foram printados e fazer outro grafico printando a Therapeutic range e fazer um grafico q mostre quanto agt pode tomar sme morrer ou sla
+plt.plot(tempo, sangue)
+plt.xlabel('tempo(h)')
+plt.ylabel('Concentracao de xanax no sangue(mg/ml)')
+plt.grid(True)
+plt.show()
