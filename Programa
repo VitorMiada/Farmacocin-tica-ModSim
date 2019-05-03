@@ -24,8 +24,8 @@ def c(t,dose,duracao):
 CI = [0,0] #condicao inicial
 def z(lista_solucao,t,dose,duracao):
     ka = 0.8
-    kx = 0.6
-    ke = 0.2
+    kx = 0.2
+    ke = 0.12
     g = lista_solucao[0]
     s = lista_solucao[1]
     dgdt = c(t,dose,duracao) - g*(ka+kx)
@@ -43,7 +43,7 @@ sangue = solucao[:,1]
 
 plt.plot(tempo, sangue)
 plt.xlabel('tempo(h)')
-plt.ylabel('Concentracao de xanax no sangue(mg)')
+plt.ylabel('Concentracao de xanax no sangue(g)')
 plt.grid(True)
 plt.show()
 
@@ -59,12 +59,16 @@ for dose in lista_dose:
 #concentracao de xanax no sangue por tempo (iteraca de cada tempo)    
 plt.legend()
 plt.xlabel("Tempo (h)")
-plt.ylabel("Massa de xanax no corpo(mg)")
+plt.ylabel("Massa de xanax no corpo(g)")
 plt.grid(True)    
 plt.show()
 
 #janela terapeutica
-for t in tempo:
-    solucao = odeint(z,CI,tempo,args=(dose,duracao))
-    sangue = solucao[:,1]
-    if sangue <= 0.1
+
+    
+    
+    
+
+  
+
+#arrumar os graficos q foram printados e fazer outro grafico printando a Therapeutic range e fazer um grafico q mostre quanto agt pode tomar sme morrer ou sla
